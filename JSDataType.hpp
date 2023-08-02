@@ -25,8 +25,36 @@ napi_value ObjectMemory(napi_env env, napi_callback_info info, double Memory){
     return memory;
 }
 
-napi_value CreateString(napi_env env, char* str){
+napi_value CreateStringJS(napi_env env, char* str){
     napi_value msg;
     napi_create_string_utf8(env,str,NAPI_AUTO_LENGTH,&msg);
     return msg;
+}
+
+bool CheckDataTypeJS(napi_env env, napi_value value, napi_valuetype type){
+    napi_valuetype DataType;
+    napi_typeof(env,value,&DataType);
+    return (DataType == type) ? true : false;
+}
+
+bool IS_JS_ARRAY(napi_env env, napi_value array){
+    bool isArray;
+    napi_is_array(env,array,&isArray);
+    return isArray;
+}
+
+int JSArrayLength(napi_env env, napi_value array){
+    uint32_t length;
+    napi_get_array_length(env,array,&length);
+    return length;
+}
+
+bool IS_JS_STRING_ARRAY(napi_env env, napi_value array){
+    int length = JSArrayLength(env,array);
+    for(int index = 0; index < length; index++){
+        napi_value element;
+        napi_get_element(env,array,index,&element);
+        if(!CheckDataTypeJS(env,element,napi_string))   return false;
+    }
+    return true;
 }

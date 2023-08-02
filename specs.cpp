@@ -1,4 +1,4 @@
-#include"StructData.h"
+#include"JSDataType.hpp"
 #include"DriveSize.hpp"
 
 napi_value getAvailableDrives(napi_env env, napi_callback_info info){
@@ -7,15 +7,23 @@ napi_value getAvailableDrives(napi_env env, napi_callback_info info){
     napi_create_array_with_length(env,AvailableDrives.size(),&Units);
     for(int index = 0; index < AvailableDrives.size(); index++){
         napi_value unit;
-        napi_create_string_utf8(env,AvailableDrives[1].c_str(),AvailableDrives[1].size(),&unit);
+        napi_create_string_utf8(env,AvailableDrives[index].c_str(),AvailableDrives[index].size(),&unit);
         napi_set_element(env,Units,index,unit);
     }
     return Units;
 }
 
 napi_value getSizeDrives(napi_env env, napi_callback_info info){
-    napi_throw_error(env,nullptr,"Erro fudido");
-    return NULL;
+    size_t argc = 1;
+    napi_value argv[1];
+    napi_get_cb_info(env,info,&argc,argv,NULL,NULL);
+
+    if(CheckDataTypeJS(env,argv[0], napi_string))       return CreateStringJS(env,"String");
+    else if(IS_JS_ARRAY(env,argv[0])){
+        if(!IS_JS_STRING_ARRAY(env,argv[0]))     return CreateStringJS(env,"É um Array mas não de strings");
+        else return CreateStringJS(env, "É um Array de strings");
+    }
+    return CreateStringJS(env, "DataType not support");
 }
 
 napi_value getPCName(napi_env env, napi_callback_info info){

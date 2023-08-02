@@ -21,3 +21,12 @@ vector<string> GetAvailableDrives(){
     }
     return drives;
 }
+
+double GetFreeSpaceDrive(string drivePath){
+    wstring Path = wstring(drivePath.begin(),drivePath.end());
+    ULARGE_INTEGER freeBytesAvailable, totalNumberOfBytes, totalNumberOfFreeBytes;
+    if(GetDiskFreeSpaceExW(Path.c_str(),&freeBytesAvailable,&totalNumberOfBytes,&totalNumberOfFreeBytes))
+        return freeBytesAvailable.QuadPart / (1024 * 1024 * 1024);
+    else
+        return -1;
+}
