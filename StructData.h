@@ -24,3 +24,9 @@ napi_value ObjectMemory(napi_env env, napi_callback_info info, double Memory){
     napi_set_named_property(env,memory,"GigaBytes",xGigaBytes);
     return memory;
 }
+
+napi_value CreateString(napi_env env, char* str){
+    napi_value msg;
+    napi_create_string_utf8(env,str,NAPI_AUTO_LENGTH,&msg);
+    return msg;
+}
