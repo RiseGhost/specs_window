@@ -13,23 +13,37 @@ napi_value getAvailableDrives(napi_env env, napi_callback_info info){
     return Units;
 }
 
+//Return Free Space in Drive:
+napi_value FreeSizeDrives(napi_env env, napi_value Drive){
+    napi_value SizeFree;
+    char Path[4];
+    size_t strSize;
+    napi_get_value_string_utf8(env,Drive,Path,4,&strSize);
+    napi_create_double(env,GetFreeSpaceDrive(string(Path)),&SizeFree);
+    return SizeFree;
+}
+
 napi_value getFreeSizeDrives(napi_env env, napi_callback_info info){
     size_t argc = 1;
     napi_value argv[1];
     napi_get_cb_info(env,info,&argc,argv,NULL,NULL);
     
 
-    if(CheckDataTypeJS(env,argv[0], napi_string)){
-        napi_value SizeFree;
-        char Path[4];
-        size_t strSize;
-        napi_get_value_string_utf8(env,argv[0],Path,4,&strSize);
-        napi_create_double(env,GetFreeSpaceDrive(string(Path)),&SizeFree);
-        return SizeFree;
-    }
+    if(CheckDataTypeJS(env,argv[0], napi_string))
+        return FreeSizeDrives(env, argv[0]);
     else if(IS_JS_ARRAY(env,argv[0])){
-        if(!IS_JS_STRING_ARRAY(env,argv[0]))     napi_throw_error(env,NULL,"Invalid arg");
-        else return CreateStringJS(env, "É um ARRAY de strings");
+        if(IS_JS_STRING_ARRAY(env,argv[0])){
+            int length = JSArrayLength(env,argv[0]);
+            napi_value FreeSpaceArray;
+            napi_create_array_with_length(env,length,&FreeSpaceArray);
+            for(int index = 0; index < length; index++){
+                napi_value element;
+                napi_get_element(env,argv[0],index,&element);
+                napi_set_element(env,FreeSpaceArray,index,FreeSizeDrives(env,element));
+            }
+            return FreeSpaceArray;
+        }
+        else napi_throw_error(env,NULL,"Invalid arg");
     }
     napi_throw_error(env,NULL,"Invalid arg");
 }
