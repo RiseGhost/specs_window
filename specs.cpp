@@ -1,5 +1,17 @@
 #include"StructData.h"
-#include"systeminfo.h"
+#include"DriveSize.hpp"
+
+napi_value getAvailableDrives(napi_env env, napi_callback_info info){
+    vector<string> AvailableDrives = GetAvailableDrives();
+    napi_value Units;
+    napi_create_array_with_length(env,AvailableDrives.size(),&Units);
+    for(int index = 0; index < AvailableDrives.size(); index++){
+        napi_value unit;
+        napi_create_string_utf8(env,AvailableDrives[1].c_str(),AvailableDrives[1].size(),&unit);
+        napi_set_element(env,Units,index,unit);
+    }
+    return Units;
+}
 
 napi_value getPCName(napi_env env, napi_callback_info info){
     napi_value Name;
@@ -45,6 +57,7 @@ napi_value getFreeMemoryGB(napi_env env, napi_callback_info info){
 
 napi_value init(napi_env env, napi_value exports){
     napi_value funcProcessorNumber,funcPCName,funcArchitecture,funcTotalMemory,funcTotalMemoryGB,funcFreeMemory,funcFreeMemoryGB;
+    napi_value funcAvailableDrives;
 
     napi_create_function(env,nullptr,0,getProcessorsNumber,nullptr,&funcProcessorNumber);
     napi_create_function(env,nullptr,0,getPCName,nullptr,&funcPCName);
@@ -53,6 +66,7 @@ napi_value init(napi_env env, napi_value exports){
     napi_create_function(env,nullptr,0,getTotalMemoryGB,nullptr,&funcTotalMemoryGB);
     napi_create_function(env,nullptr,0,getFreeMemory,nullptr,&funcFreeMemory);
     napi_create_function(env,nullptr,0,getFreeMemoryGB,nullptr,&funcFreeMemoryGB);
+    napi_create_function(env,nullptr,0,getAvailableDrives,nullptr,&funcAvailableDrives);
     napi_set_named_property(env,exports,"getProcessorsNumber",funcProcessorNumber);
     napi_set_named_property(env,exports,"getPCName",funcPCName);
     napi_set_named_property(env,exports,"getProcessorArchitecture",funcArchitecture);
@@ -60,6 +74,7 @@ napi_value init(napi_env env, napi_value exports){
     napi_set_named_property(env,exports,"getTotalMemoryGB",funcTotalMemoryGB);
     napi_set_named_property(env,exports,"getFreeMemory",funcFreeMemory);
     napi_set_named_property(env,exports,"getFreeMemoryGB",funcFreeMemoryGB);
+    napi_set_named_property(env,exports,"getAvailableDrives",funcAvailableDrives);
 
     return exports;
 }
