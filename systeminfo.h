@@ -40,12 +40,20 @@ String ProcessorArchitecture(){
 }
 
 //Return the Total RAM Memory Install
-DWORDLONG GetTotalMemory() {
+DWORDLONG GetTotalMemory(){
     MEMORYSTATUSEX memoryStatus;
     memoryStatus.dwLength = sizeof(memoryStatus);
 
-    if (GlobalMemoryStatusEx(&memoryStatus))
-        return memoryStatus.ullTotalPhys;
+    if (GlobalMemoryStatusEx(&memoryStatus))    return memoryStatus.ullTotalPhys;
+
+    return 0;
+}
+
+DWORDLONG GetFreeMemory(){
+    MEMORYSTATUSEX memoryStatus;
+    memoryStatus.dwLength = sizeof(memoryStatus);
+
+    if (GlobalMemoryStatusEx(&memoryStatus))    return memoryStatus.ullAvailPhys;
 
     return 0;
 }

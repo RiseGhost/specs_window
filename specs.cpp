@@ -1,4 +1,4 @@
-#include<node_api.h>
+#include"StructData.h"
 #include"systeminfo.h"
 
 napi_value getPCName(napi_env env, napi_callback_info info){
@@ -22,43 +22,44 @@ napi_value getProcessorsNumber(napi_env env, napi_callback_info info){
 }
 
 napi_value getTotalMemory(napi_env env, napi_callback_info info){
-    double totalmemory = GetTotalMemory();
-    napi_value memory;
-    napi_create_object(env,&memory);
-    napi_value xBytes, xKiloBytes, xMegaBytes, xGigaBytes;
-    napi_create_int64(env,totalmemory,&xBytes);
-    napi_create_double(env,totalmemory / (1024),&xKiloBytes);
-    napi_create_double(env,totalmemory / (1024 * 1024),&xMegaBytes);
-    napi_create_double(env,totalmemory / (1024 * 1024 * 1024),&xGigaBytes);
-
-    napi_set_named_property(env,memory,"Bytes",xBytes);
-    napi_set_named_property(env,memory,"KiloBytes",xKiloBytes);
-    napi_set_named_property(env,memory,"MegaBytes",xMegaBytes);
-    napi_set_named_property(env,memory,"GigaBytes",xGigaBytes);
-
-    return memory;
+    return ObjectMemory(env,info,GetTotalMemory());
 }
 
 napi_value getTotalMemoryGB(napi_env env, napi_callback_info info){
-    double totalmemoryGB = GetTotalMemory() / (1024 * 1024 * 1024);
+    double totalmemoryGB = GetTotalMemory() / (1024.0 * 1024.0 * 1024.0);
     napi_value memory;
-    napi_create_int32(env,totalmemoryGB,&memory);
+    napi_create_double(env,totalmemoryGB,&memory);
+    return memory;
+}
+
+napi_value getFreeMemory(napi_env env, napi_callback_info info){
+    return ObjectMemory(env,info,GetFreeMemory());
+}
+
+napi_value getFreeMemoryGB(napi_env env, napi_callback_info info){
+    double totalmemoryGB = GetFreeMemory() / (1024.0 * 1024.0 * 1024.0);
+    napi_value memory;
+    napi_create_double(env,totalmemoryGB,&memory);
     return memory;
 }
 
 napi_value init(napi_env env, napi_value exports){
-    napi_value funcProcessorNumber,funcPCName,funcArchitecture,funcTotalMemory,funcTotalMemoryGB;
+    napi_value funcProcessorNumber,funcPCName,funcArchitecture,funcTotalMemory,funcTotalMemoryGB,funcFreeMemory,funcFreeMemoryGB;
 
     napi_create_function(env,nullptr,0,getProcessorsNumber,nullptr,&funcProcessorNumber);
     napi_create_function(env,nullptr,0,getPCName,nullptr,&funcPCName);
     napi_create_function(env,nullptr,0,getProcessorArchitecture,nullptr,&funcArchitecture);
     napi_create_function(env,nullptr,0,getTotalMemory,nullptr,&funcTotalMemory);
     napi_create_function(env,nullptr,0,getTotalMemoryGB,nullptr,&funcTotalMemoryGB);
+    napi_create_function(env,nullptr,0,getFreeMemory,nullptr,&funcFreeMemory);
+    napi_create_function(env,nullptr,0,getFreeMemoryGB,nullptr,&funcFreeMemoryGB);
     napi_set_named_property(env,exports,"getProcessorsNumber",funcProcessorNumber);
     napi_set_named_property(env,exports,"getPCName",funcPCName);
     napi_set_named_property(env,exports,"getProcessorArchitecture",funcArchitecture);
     napi_set_named_property(env,exports,"getTotalMemory",funcTotalMemory);
     napi_set_named_property(env,exports,"getTotalMemoryGB",funcTotalMemoryGB);
+    napi_set_named_property(env,exports,"getFreeMemory",funcFreeMemory);
+    napi_set_named_property(env,exports,"getFreeMemoryGB",funcFreeMemoryGB);
 
     return exports;
 }
