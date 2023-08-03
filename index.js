@@ -9,5 +9,5 @@ module.exports = {
     getFreeMemoryGB:            specs.getFreeMemoryGB,
     getFreeMemory:              specs.getFreeMemory,
     getAvailableDrives:         specs.getAvailableDrives,
-    getFreeSizeDrives:          specs.getFreeSizeDrives
+    getSizeDrives:              specs.getSizeDrives
 }

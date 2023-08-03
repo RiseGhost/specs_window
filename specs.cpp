@@ -13,24 +13,21 @@ napi_value getAvailableDrives(napi_env env, napi_callback_info info){
     return Units;
 }
 
-//Return Free Space in Drive:
-napi_value FreeSizeDrives(napi_env env, napi_value Drive){
-    napi_value SizeFree;
-    char Path[4];
-    size_t strSize;
-    napi_get_value_string_utf8(env,Drive,Path,4,&strSize);
-    napi_create_double(env,GetFreeSpaceDrive(string(Path)),&SizeFree);
-    return SizeFree;
-}
-
-napi_value getFreeSizeDrives(napi_env env, napi_callback_info info){
+//Retorna o Espaço Livre e Total em cada DrivePath em MegaBytes:
+//Input1:   'C:\\'
+//Ouput1:    {'FreeMemory': 19865, 'FullMemory': 425668.99609375} (por exemplo)
+//Input2:   ['C:\\','G:\\']
+//Output2:  [{ 'FreeMemory': 19865, 'FullMemory': 425668.99609375 },{ 'FreeMemory': 49860, 'FullMemory': 985768.70009375 },] (por exemplo)
+//Em caso de não conseguir obter os dados dos DrivePath a memória é identificada como -1
+napi_value getSizeDrives(napi_env env, napi_callback_info DrivePath){
     size_t argc = 1;
     napi_value argv[1];
-    napi_get_cb_info(env,info,&argc,argv,NULL,NULL);
+    napi_get_cb_info(env,DrivePath,&argc,argv,NULL,NULL);
     
-
+    //Caso o usuário passe apenas um DrivePath:
     if(CheckDataTypeJS(env,argv[0], napi_string))
-        return FreeSizeDrives(env, argv[0]);
+        return ObejctDiskSpace(env,FreeSizeDrives(env, argv[0]),SizeDrives(env, argv[0]));
+    //Caso o usuário passe um array de DrivePaths:
     else if(IS_JS_ARRAY(env,argv[0])){
         if(IS_JS_STRING_ARRAY(env,argv[0])){
             int length = JSArrayLength(env,argv[0]);
@@ -39,13 +36,14 @@ napi_value getFreeSizeDrives(napi_env env, napi_callback_info info){
             for(int index = 0; index < length; index++){
                 napi_value element;
                 napi_get_element(env,argv[0],index,&element);
-                napi_set_element(env,FreeSpaceArray,index,FreeSizeDrives(env,element));
+                napi_set_element(env,FreeSpaceArray,index,ObejctDiskSpace(env,FreeSizeDrives(env,element),SizeDrives(env,element)));
             }
             return FreeSpaceArray;
         }
         else napi_throw_error(env,NULL,"Invalid arg");
     }
     napi_throw_error(env,NULL,"Invalid arg");
+    return NULL;
 }
 
 napi_value getPCName(napi_env env, napi_callback_info info){
@@ -92,7 +90,7 @@ napi_value getFreeMemoryGB(napi_env env, napi_callback_info info){
 
 napi_value init(napi_env env, napi_value exports){
     napi_value funcProcessorNumber,funcPCName,funcArchitecture,funcTotalMemory,funcTotalMemoryGB,funcFreeMemory,funcFreeMemoryGB;
-    napi_value funcAvailableDrives,funcSizeFreeDrives;
+    napi_value funcAvailableDrives,funcSizeDrives;
 
     napi_create_function(env,nullptr,0,getProcessorsNumber,nullptr,&funcProcessorNumber);
     napi_create_function(env,nullptr,0,getPCName,nullptr,&funcPCName);
@@ -102,7 +100,7 @@ napi_value init(napi_env env, napi_value exports){
     napi_create_function(env,nullptr,0,getFreeMemory,nullptr,&funcFreeMemory);
     napi_create_function(env,nullptr,0,getFreeMemoryGB,nullptr,&funcFreeMemoryGB);
     napi_create_function(env,nullptr,0,getAvailableDrives,nullptr,&funcAvailableDrives);
-    napi_create_function(env,nullptr,0,getFreeSizeDrives,nullptr,&funcSizeFreeDrives);
+    napi_create_function(env,nullptr,0,getSizeDrives,nullptr,&funcSizeDrives);
     napi_set_named_property(env,exports,"getProcessorsNumber",funcProcessorNumber);
     napi_set_named_property(env,exports,"getPCName",funcPCName);
     napi_set_named_property(env,exports,"getProcessorArchitecture",funcArchitecture);
@@ -111,7 +109,7 @@ napi_value init(napi_env env, napi_value exports){
     napi_set_named_property(env,exports,"getFreeMemory",funcFreeMemory);
     napi_set_named_property(env,exports,"getFreeMemoryGB",funcFreeMemoryGB);
     napi_set_named_property(env,exports,"getAvailableDrives",funcAvailableDrives);
-    napi_set_named_property(env,exports,"getFreeSizeDrives",funcSizeFreeDrives);
+    napi_set_named_property(env,exports,"getSizeDrives",funcSizeDrives);
 
     return exports;
 }

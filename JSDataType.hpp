@@ -25,6 +25,21 @@ napi_value ObjectMemory(napi_env env, napi_callback_info info, double Memory){
     return memory;
 }
 
+//Create JS object with following struct:
+/*
+{
+    FreeMemory:    Memory Free in MegaBytes,
+    FullMemory     Full Memory in MegaBytes,
+}
+*/
+napi_value ObejctDiskSpace(napi_env env, napi_value MemoryFree, napi_value MemoryTotal){
+    napi_value Disk;
+    napi_create_object(env,&Disk);
+    napi_set_named_property(env,Disk,"FreeMemory",MemoryFree);
+    napi_set_named_property(env,Disk,"FullMemory",MemoryTotal);
+    return Disk;
+}
+
 napi_value CreateStringJS(napi_env env, char* str){
     napi_value msg;
     napi_create_string_utf8(env,str,NAPI_AUTO_LENGTH,&msg);
