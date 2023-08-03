@@ -10,4 +10,5 @@ module.exports = {
     getFreeMemory:              specs.getFreeMemory,
     getAvailableDrives:         specs.getAvailableDrives,
     getSizeDrives:              specs.getSizeDrives,
+    getMousePos:                specs.getMousePos,
 }

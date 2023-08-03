@@ -40,6 +40,14 @@ napi_value ObejctDiskSpace(napi_env env, napi_value MemoryFree, napi_value Memor
     return Disk;
 }
 
+napi_value ObjectPointer(napi_env env, napi_value x, napi_value y){
+    napi_value Pointer;
+    napi_create_object(env,&Pointer);
+    napi_set_named_property(env,Pointer,"X",x);
+    napi_set_named_property(env,Pointer,"Y",y);
+    return Pointer;
+}
+
 napi_value CreateStringJS(napi_env env, char* str){
     napi_value msg;
     napi_create_string_utf8(env,str,NAPI_AUTO_LENGTH,&msg);

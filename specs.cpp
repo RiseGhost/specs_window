@@ -1,6 +1,14 @@
 #include"JSDataType.hpp"
 #include"DriveSize.hpp"
 
+napi_value getMousePos(napi_env env, napi_callback_info info){
+    POINT point = MousePos();
+    napi_value x, y;
+    napi_create_int32(env,point.x,&x);
+    napi_create_int32(env,point.y,&y);
+    return ObjectPointer(env,x,y);
+}
+
 napi_value getAvailableDrives(napi_env env, napi_callback_info info){
     vector<string> AvailableDrives = GetAvailableDrives();
     napi_value Units;
@@ -90,7 +98,7 @@ napi_value getFreeMemoryGB(napi_env env, napi_callback_info info){
 
 napi_value init(napi_env env, napi_value exports){
     napi_value funcProcessorNumber,funcPCName,funcArchitecture,funcTotalMemory,funcTotalMemoryGB,funcFreeMemory,funcFreeMemoryGB;
-    napi_value funcAvailableDrives,funcSizeDrives;
+    napi_value funcAvailableDrives,funcSizeDrives,funcMousePos;
 
     napi_create_function(env,nullptr,0,getProcessorsNumber,nullptr,&funcProcessorNumber);
     napi_create_function(env,nullptr,0,getPCName,nullptr,&funcPCName);
@@ -101,6 +109,7 @@ napi_value init(napi_env env, napi_value exports){
     napi_create_function(env,nullptr,0,getFreeMemoryGB,nullptr,&funcFreeMemoryGB);
     napi_create_function(env,nullptr,0,getAvailableDrives,nullptr,&funcAvailableDrives);
     napi_create_function(env,nullptr,0,getSizeDrives,nullptr,&funcSizeDrives);
+    napi_create_function(env,nullptr,0,getMousePos,nullptr,&funcMousePos);
     napi_set_named_property(env,exports,"getProcessorsNumber",funcProcessorNumber);
     napi_set_named_property(env,exports,"getPCName",funcPCName);
     napi_set_named_property(env,exports,"getProcessorArchitecture",funcArchitecture);
@@ -110,6 +119,7 @@ napi_value init(napi_env env, napi_value exports){
     napi_set_named_property(env,exports,"getFreeMemoryGB",funcFreeMemoryGB);
     napi_set_named_property(env,exports,"getAvailableDrives",funcAvailableDrives);
     napi_set_named_property(env,exports,"getSizeDrives",funcSizeDrives);
+    napi_set_named_property(env,exports,"getMousePos",funcMousePos);
 
     return exports;
 }

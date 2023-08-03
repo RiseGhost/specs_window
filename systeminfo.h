@@ -57,3 +57,10 @@ DWORDLONG GetFreeMemory(){
 
     return 0;
 }
+
+POINT MousePos(){
+    POINT cursos;
+    GetCursorPos(&cursos);
+    ScreenToClient(GetDesktopWindow(),&cursos);
+    return cursos;
+}
