@@ -22,7 +22,8 @@ npm install specs_window
 - Get Free RAM Memory;
 - Get Available Drives (Units: C:\\, G:\\, F:\\, ...);
 - Get Size Drives;
-- Get Mouse position;
+- Get Cursor/Mouse position;
+- Move Cursor/Mouse;
 - Get Screen Size
 
 
@@ -177,7 +178,7 @@ console.log(specs.getSizeDrives(Drives))
 
 If the func can´t read a Memory of Drive return -1.
 
-### Get Mouse position 🐁🗺️:
+### Get Cursor/Mouse position 🐁🗺️:
 
 Return the mouse position in the screen not in the window.
 
@@ -189,6 +190,16 @@ console.log(specs.getMousePos())
 
 ````JS
 { X: 1642, Y: 847 }
+````
+
+### Move Cursor/Mouse 🐁➡️:
+
+Yes, you can move de Cursor/Mouse.
+
+````JS
+const specs = require('specs_window')
+
+specs.MoveMouse(500,900)
 ````
 
 ### Get Screen Size 📺📐:

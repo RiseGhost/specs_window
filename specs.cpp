@@ -1,6 +1,18 @@
 #include"JSDataType.hpp"
 #include"DriveSize.hpp"
 
+napi_value MoveMouse(napi_env env, napi_callback_info info){
+    size_t argc = 2;
+    napi_value argv[2];
+    int x,y;
+    napi_get_cb_info(env,info,&argc,argv,NULL,NULL);
+    if (!(CheckDataTypeJS(env,argv[1],napi_number) && CheckDataTypeJS(env,argv[1],napi_number)))    napi_throw_error(env,NULL,"The argument is not a number ❌");
+    napi_get_value_int32(env,argv[0],&x);
+    napi_get_value_int32(env,argv[1],&y);
+    SetCursorPos(x,y);
+    return NULL;
+}
+
 napi_value getScreenSize(napi_env env, napi_callback_info info){
     ScreenSize ss = Screen_Size();
     napi_value width, height;
@@ -106,7 +118,7 @@ napi_value getFreeMemoryGB(napi_env env, napi_callback_info info){
 
 napi_value init(napi_env env, napi_value exports){
     napi_value funcProcessorNumber,funcPCName,funcArchitecture,funcTotalMemory,funcTotalMemoryGB,funcFreeMemory,funcFreeMemoryGB;
-    napi_value funcAvailableDrives,funcSizeDrives,funcMousePos,funcScreenSize;
+    napi_value funcAvailableDrives,funcSizeDrives,funcMousePos,funcScreenSize,funcMoveMouse;
 
     napi_create_function(env,nullptr,0,getProcessorsNumber,nullptr,&funcProcessorNumber);
     napi_create_function(env,nullptr,0,getPCName,nullptr,&funcPCName);
@@ -119,6 +131,7 @@ napi_value init(napi_env env, napi_value exports){
     napi_create_function(env,nullptr,0,getSizeDrives,nullptr,&funcSizeDrives);
     napi_create_function(env,nullptr,0,getMousePos,nullptr,&funcMousePos);
     napi_create_function(env,nullptr,0,getScreenSize,nullptr,&funcScreenSize);
+    napi_create_function(env,nullptr,0,MoveMouse,nullptr,&funcMoveMouse);
     napi_set_named_property(env,exports,"getProcessorsNumber",funcProcessorNumber);
     napi_set_named_property(env,exports,"getPCName",funcPCName);
     napi_set_named_property(env,exports,"getProcessorArchitecture",funcArchitecture);
@@ -130,6 +143,7 @@ napi_value init(napi_env env, napi_value exports){
     napi_set_named_property(env,exports,"getSizeDrives",funcSizeDrives);
     napi_set_named_property(env,exports,"getMousePos",funcMousePos);
     napi_set_named_property(env,exports,"getScreenSize",funcScreenSize);
+    napi_set_named_property(env,exports,"MoveMouse",funcMoveMouse);
 
     return exports;
 }
