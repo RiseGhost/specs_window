@@ -1,7 +1,7 @@
 {
   "name": "specs_window",
   "version": "1.1.0",
-  "description": "It is a npm module to get hardware informacions.",
+  "description": "It is a NodeJS module to get hardware informacions.",
   "main": "index.js",
   "scripts": {
     "clean_build": "mkdir build && node-gyp configure build",
@@ -12,7 +12,21 @@
     "type": "git",
     "url": "git+https://github.com/RiseGhost/specs_window.git"
   },
-  "keywords": [],
+  "keywords": [
+    "node",
+    "javascript",
+    "npm",
+    "hardware",
+    "hardware specs",
+    "windows hardware",
+    "hardware info",
+    "windows info",
+    "windows",
+    "specs_window",
+    "specs",
+    "specs window",
+    "specs windows"
+  ],
   "author": "",
   "license": "ISC",
   "gypfile": true,
