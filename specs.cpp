@@ -1,6 +1,14 @@
 #include"JSDataType.hpp"
 #include"DriveSize.hpp"
 
+napi_value getScreenSize(napi_env env, napi_callback_info info){
+    ScreenSize ss = Screen_Size();
+    napi_value width, height;
+    napi_create_int32(env,ss.width,&width);
+    napi_create_int32(env,ss.height,&height);
+    return ObjectScreenSize(env,width,height);
+}
+
 napi_value getMousePos(napi_env env, napi_callback_info info){
     POINT point = MousePos();
     napi_value x, y;
@@ -98,7 +106,7 @@ napi_value getFreeMemoryGB(napi_env env, napi_callback_info info){
 
 napi_value init(napi_env env, napi_value exports){
     napi_value funcProcessorNumber,funcPCName,funcArchitecture,funcTotalMemory,funcTotalMemoryGB,funcFreeMemory,funcFreeMemoryGB;
-    napi_value funcAvailableDrives,funcSizeDrives,funcMousePos;
+    napi_value funcAvailableDrives,funcSizeDrives,funcMousePos,funcScreenSize;
 
     napi_create_function(env,nullptr,0,getProcessorsNumber,nullptr,&funcProcessorNumber);
     napi_create_function(env,nullptr,0,getPCName,nullptr,&funcPCName);
@@ -110,6 +118,7 @@ napi_value init(napi_env env, napi_value exports){
     napi_create_function(env,nullptr,0,getAvailableDrives,nullptr,&funcAvailableDrives);
     napi_create_function(env,nullptr,0,getSizeDrives,nullptr,&funcSizeDrives);
     napi_create_function(env,nullptr,0,getMousePos,nullptr,&funcMousePos);
+    napi_create_function(env,nullptr,0,getScreenSize,nullptr,&funcScreenSize);
     napi_set_named_property(env,exports,"getProcessorsNumber",funcProcessorNumber);
     napi_set_named_property(env,exports,"getPCName",funcPCName);
     napi_set_named_property(env,exports,"getProcessorArchitecture",funcArchitecture);
@@ -120,6 +129,7 @@ napi_value init(napi_env env, napi_value exports){
     napi_set_named_property(env,exports,"getAvailableDrives",funcAvailableDrives);
     napi_set_named_property(env,exports,"getSizeDrives",funcSizeDrives);
     napi_set_named_property(env,exports,"getMousePos",funcMousePos);
+    napi_set_named_property(env,exports,"getScreenSize",funcScreenSize);
 
     return exports;
 }

@@ -40,12 +40,27 @@ napi_value ObejctDiskSpace(napi_env env, napi_value MemoryFree, napi_value Memor
     return Disk;
 }
 
+//Create JS object with following struct
+/*
+{
+    X:  Posions X of mouse;
+    Y:  Posions Y of mouse
+}
+*/
 napi_value ObjectPointer(napi_env env, napi_value x, napi_value y){
     napi_value Pointer;
     napi_create_object(env,&Pointer);
     napi_set_named_property(env,Pointer,"X",x);
     napi_set_named_property(env,Pointer,"Y",y);
     return Pointer;
+}
+
+napi_value ObjectScreenSize(napi_env env, napi_value width, napi_value height){
+    napi_value ScreenSize;
+    napi_create_object(env,&ScreenSize);
+    napi_set_named_property(env,ScreenSize,"width",width);
+    napi_set_named_property(env,ScreenSize,"height",height);
+    return ScreenSize;
 }
 
 napi_value CreateStringJS(napi_env env, char* str){

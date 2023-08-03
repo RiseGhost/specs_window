@@ -4,6 +4,10 @@
 
 typedef const char* String;
 
+struct ScreenSize{
+    int width;
+    int height;
+};
 SYSTEM_INFO sysinfo;
 
 //Return the last valid index of buffer array
@@ -63,4 +67,11 @@ POINT MousePos(){
     GetCursorPos(&cursos);
     ScreenToClient(GetDesktopWindow(),&cursos);
     return cursos;
+}
+
+ScreenSize Screen_Size(){
+    ScreenSize ss;
+    ss.width = GetSystemMetrics(SM_CXSCREEN);
+    ss.height = GetSystemMetrics(SM_CYSCREEN);
+    return ss;
 }

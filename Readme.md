@@ -21,5 +21,7 @@ npm install specs_window
 - Get Total RAM Memory install;
 - Get Free RAM Memory;
 - Get Available Drives (Units: C:\\, G:\\, F:\\, ...);
-- Get Size Drives
+- Get Size Drives;
+- Get Mouse position;
+- Get Screen Size
 

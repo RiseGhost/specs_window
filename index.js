@@ -11,4 +11,5 @@ module.exports = {
     getAvailableDrives:         specs.getAvailableDrives,
     getSizeDrives:              specs.getSizeDrives,
     getMousePos:                specs.getMousePos,
+    getScreenSize:              specs.getScreenSize
 }
