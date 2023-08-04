@@ -1,5 +1,23 @@
 #include"JSDataType.hpp"
 #include"DriveSize.hpp"
+#include"Processes.hpp"
+
+napi_value GetProcesses(napi_env env, napi_callback_info info){
+    ProcessArray PA = GetAllProcesses();
+    napi_value ProcesseArray;
+    napi_create_array_with_length(env,PA.Number,&ProcesseArray);
+    for(int index = 0; index < PA.Number; index++){
+        napi_value PID, name, Commit, WorkingSet;
+        HANDLE ProcessOpen = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, PA.Process[index]);
+        ProcessMemory PM = MemoryInfo(ProcessOpen);
+        napi_create_int32(env,PA.Process[index],&PID);
+        napi_create_string_utf8(env,ProcessName(ProcessOpen).c_str(),NAPI_AUTO_LENGTH,&name);
+        napi_create_int32(env,PM.Commit,&Commit);
+        napi_create_int32(env,PM.WorkingSet,&WorkingSet);
+        napi_set_element(env,ProcesseArray,index,ObjectProcesse(env,PID,name,Commit,WorkingSet));
+    }
+    return ProcesseArray;
+}
 
 napi_value MoveMouse(napi_env env, napi_callback_info info){
     size_t argc = 2;
@@ -118,7 +136,7 @@ napi_value getFreeMemoryGB(napi_env env, napi_callback_info info){
 
 napi_value init(napi_env env, napi_value exports){
     napi_value funcProcessorNumber,funcPCName,funcArchitecture,funcTotalMemory,funcTotalMemoryGB,funcFreeMemory,funcFreeMemoryGB;
-    napi_value funcAvailableDrives,funcSizeDrives,funcMousePos,funcScreenSize,funcMoveMouse;
+    napi_value funcAvailableDrives,funcSizeDrives,funcMousePos,funcScreenSize,funcMoveMouse,funcProcesses;
 
     napi_create_function(env,nullptr,0,getProcessorsNumber,nullptr,&funcProcessorNumber);
     napi_create_function(env,nullptr,0,getPCName,nullptr,&funcPCName);
@@ -132,6 +150,7 @@ napi_value init(napi_env env, napi_value exports){
     napi_create_function(env,nullptr,0,getMousePos,nullptr,&funcMousePos);
     napi_create_function(env,nullptr,0,getScreenSize,nullptr,&funcScreenSize);
     napi_create_function(env,nullptr,0,MoveMouse,nullptr,&funcMoveMouse);
+    napi_create_function(env,nullptr,0,GetProcesses,nullptr,&funcProcesses);
     napi_set_named_property(env,exports,"getProcessorsNumber",funcProcessorNumber);
     napi_set_named_property(env,exports,"getPCName",funcPCName);
     napi_set_named_property(env,exports,"getProcessorArchitecture",funcArchitecture);
@@ -144,6 +163,7 @@ napi_value init(napi_env env, napi_value exports){
     napi_set_named_property(env,exports,"getMousePos",funcMousePos);
     napi_set_named_property(env,exports,"getScreenSize",funcScreenSize);
     napi_set_named_property(env,exports,"MoveMouse",funcMoveMouse);
+    napi_set_named_property(env,exports,"GetProcesses",funcProcesses);
 
     return exports;
 }

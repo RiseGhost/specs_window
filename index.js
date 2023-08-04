@@ -13,4 +13,5 @@ module.exports = {
     getMousePos:                specs.getMousePos,
     getScreenSize:              specs.getScreenSize,
     MoveMouse:                  specs.MoveMouse,
+    getProcesses:               specs.GetProcesses,
 }

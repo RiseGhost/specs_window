@@ -25,6 +25,16 @@ napi_value ObjectMemory(napi_env env, napi_callback_info info, double Memory){
     return memory;
 }
 
+napi_value ObjectProcesse(napi_env env, napi_value PID, napi_value name, napi_value MemoryCommit, napi_value MemoryWorkingSet){
+    napi_value Processe;
+    napi_create_object(env,&Processe);
+    napi_set_named_property(env,Processe,"PID",PID);
+    napi_set_named_property(env,Processe,"Name",name);
+    napi_set_named_property(env,Processe,"MemoryCommit",MemoryCommit);
+    napi_set_named_property(env,Processe,"MemoryWorkingSet",MemoryWorkingSet);
+    return Processe;
+}
+
 //Create JS object with following struct:
 /*
 {

@@ -22,6 +22,7 @@ npm install specs_window
 - Get Free RAM Memory;
 - Get Available Drives (Units: C:\\, G:\\, F:\\, ...);
 - Get Size Drives;
+- Get Processes;
 - Get Cursor/Mouse position;
 - Move Cursor/Mouse;
 - Get Screen Size
@@ -177,6 +178,44 @@ console.log(specs.getSizeDrives(Drives))
 ````
 
 If the func can´t read a Memory of Drive return -1.
+
+### Get Processes 🌀:
+
+This func return a array with all process running in machine.
+
+````JS
+const specs = require('specs_window')
+
+Object.values(specs.getProcesses()).forEach((Processe) => {
+  console.log(Processe)
+})
+
+//or:
+console.log(specs.getProcesses())
+````
+
+````JS
+{
+  PID: 23060,
+  Name: 'Code.exe',
+  MemoryCommit: 26976,
+  MemoryWorkingSet: 91436
+}
+{
+  PID: 46872,
+  Name: 'firefox.exe',
+  MemoryCommit: 171060,
+  MemoryWorkingSet: 212420
+}
+{
+  PID: 85324,
+  Name: 'firefox.exe',
+  MemoryCommit: 26820,
+  MemoryWorkingSet: 29392
+}
+````
+
+If doesn´t get the Processe Memory, return -1.
 
 ### Get Cursor/Mouse position 🐁🗺️:
 
