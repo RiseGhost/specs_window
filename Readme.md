@@ -26,7 +26,8 @@ npm install specs_window
 - Kill Processes;
 - Get Cursor/Mouse position;
 - Move Cursor/Mouse;
-- Get Screen Size
+- Get Screen Size;
+- Get Files by Path
 
 
 ### Get CPU Threads number 🧠:
@@ -270,4 +271,57 @@ console.log(specs.getScreenSize())
 
 ````JS
 { width: 1920, height: 1080 }
+````
+
+### Get Files by Path 🗂️🛣️:
+
+This func recive with argument a path and return a array with all files and diretorys in path. You can give a path to a pendrive or another storage Unit.
+
+````JS
+const specs = require('specs_window')
+
+specs.getFilesPath("C:\\").then((res) => {console.log(res)})
+````
+
+Only for a file can you get the file size in KiloBytes.
+
+````JS
+[
+  { Name: 'BIOS', Type: 'DIR' },
+  { Name: 'Config.Msi', Type: 'DIR' },
+  { Name: 'discord-avatar.jpg', Type: 'File', KB: 354805 },
+  { Name: 'Documents and Settings', Type: 'DIR' },
+  { Name: 'Drivers', Type: 'DIR' },
+  { Name: 'flutter', Type: 'DIR' },
+  { Name: 'hiberfil.sys', Type: 'File', KB: 6816497664 },
+  { Name: 'Intel', Type: 'DIR' },
+  { Name: 'Java', Type: 'DIR' },
+  { Name: 'mingw64', Type: 'DIR' },
+  { Name: 'NiceHash', Type: 'DIR' },
+  { Name: 'OneDriveTemp', Type: 'DIR' },
+  { Name: 'pagefile.sys', Type: 'File', KB: 19811954688 },
+  { Name: 'PATH_PROGRAM', Type: 'DIR' },
+  { Name: 'Pearlabyss', Type: 'DIR' },
+  { Name: 'PerfLogs', Type: 'DIR' },
+  { Name: 'php', Type: 'DIR' },
+  { Name: 'Program Files', Type: 'DIR' },
+  { Name: 'Program Files (x86)', Type: 'DIR' },
+  { Name: 'Programas', Type: 'DIR' },
+  { Name: 'ProgramData', Type: 'DIR' },
+  { Name: 'Python310', Type: 'DIR' },
+  { Name: 'Recovery', Type: 'DIR' },
+  { Name: 'Registadora.jar', Type: 'File', KB: 4578 },
+  { Name: 'Riot Games', Type: 'DIR' },
+  { Name: 'SQL2019', Type: 'DIR' },
+  { Name: 'swapfile.sys', Type: 'File', KB: 16777216 },
+  { Name: 'System Volume Information', Type: 'DIR' },
+  { Name: 'temp', Type: 'DIR' },
+  { Name: 'tools', Type: 'DIR' },
+  { Name: 'UserBenchmark', Type: 'DIR' },
+  { Name: 'Users', Type: 'DIR' },
+  { Name: 'vcpkg', Type: 'DIR' },
+  { Name: 'WhatsappKeys', Type: 'DIR' },
+  { Name: 'Windows', Type: 'DIR' },
+  { Name: 'XboxGames', Type: 'DIR' }
+]
 ````

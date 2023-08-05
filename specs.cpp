@@ -20,9 +20,9 @@ napi_value getFilesPath(napi_env env, napi_callback_info info){
         napi_value Name, Type, Size;
         napi_create_string_utf8(env,f.Name.c_str(),NAPI_AUTO_LENGTH,&Name);
         napi_create_string_utf8(env,f.FileType.c_str(),NAPI_AUTO_LENGTH,&Type);
-        if(f.KB == -1)  napi_create_int64(env,NULL,&Size);
-        else            napi_create_int64(env,f.KB,&Size);
-        napi_set_element(env,ArrayFiles,index,ObjectFile(env,Name,Type,Size));
+        napi_create_int64(env,f.KB,&Size);
+        if(f.KB == -1)  napi_set_element(env,ArrayFiles,index,ObjectFile(env,Name,Type,NULL));
+        else            napi_set_element(env,ArrayFiles,index,ObjectFile(env,Name,Type,Size));
         index++;
     }
     return ArrayFiles;
