@@ -8,7 +8,7 @@ npm install specs_window
 ````
 
 ## Project info:
-- author: Riseghost     👻
+- author:               Riseghost 👻
 - languague:            C/C++
 - platform support:     Windows 🪟
 - github:               https://github.com/RiseGhost/specs_window

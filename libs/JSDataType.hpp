@@ -25,6 +25,15 @@ napi_value ObjectMemory(napi_env env, napi_callback_info info, double Memory){
     return memory;
 }
 
+//Create JS object with the following struct:
+/*
+{
+    PID:                PID,
+    Name:               Name the Processe,
+    MemoryCommit:       MemoryCommit use by Processe,
+    MomoryWorkinSet:    MomoryWorkinSet use by Processe
+}
+*/
 napi_value ObjectProcesse(napi_env env, napi_value PID, napi_value name, napi_value MemoryCommit, napi_value MemoryWorkingSet){
     napi_value Processe;
     napi_create_object(env,&Processe);
@@ -63,6 +72,15 @@ napi_value ObjectPointer(napi_env env, napi_value x, napi_value y){
     napi_set_named_property(env,Pointer,"X",x);
     napi_set_named_property(env,Pointer,"Y",y);
     return Pointer;
+}
+
+napi_value ObjectFile(napi_env env, napi_value Name, napi_value Type, napi_value Size){
+    napi_value File;
+    napi_create_object(env,&File);
+    napi_set_named_property(env,File,"Name",Name);
+    napi_set_named_property(env,File,"Type",Type);
+    napi_set_named_property(env,File,"KB",Size);
+    return File;
 }
 
 napi_value ObjectScreenSize(napi_env env, napi_value width, napi_value height){

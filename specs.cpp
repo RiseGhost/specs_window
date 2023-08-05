@@ -1,6 +1,32 @@
-#include"JSDataType.hpp"
-#include"DriveSize.hpp"
-#include"Processes.hpp"
+#include"libs/JSDataType.hpp"
+#include"libs/DriveSize.hpp"
+#include"libs/Processes.hpp"
+#include"libs/Files.hpp"
+
+napi_value getFilesPath(napi_env env, napi_callback_info info){
+    size_t argc = 1;
+    size_t stringlength;
+    napi_value argv[1];
+    char path[MAX_PATH];
+    napi_get_cb_info(env,info,&argc,argv,NULL,NULL);
+    if(!CheckDataTypeJS(env,argv[0],napi_string))   napi_throw_error(env,NULL,"The argument is not a path ❌");
+    napi_get_value_string_utf8(env,argv[0],path,sizeof(path),&stringlength);
+    vector<WFile> files = FilesPath(path);
+    napi_value ArrayFiles;
+    if(files.size() == 0)   napi_throw_error(env,NULL,"Invalid Path ❌");
+    napi_create_array_with_length(env,files.size(),&ArrayFiles);
+    int index = 0;
+    for(WFile f : files){
+        napi_value Name, Type, Size;
+        napi_create_string_utf8(env,f.Name.c_str(),NAPI_AUTO_LENGTH,&Name);
+        napi_create_string_utf8(env,f.FileType.c_str(),NAPI_AUTO_LENGTH,&Type);
+        if(f.KB == -1)  napi_create_int64(env,NULL,&Size);
+        else            napi_create_int64(env,f.KB,&Size);
+        napi_set_element(env,ArrayFiles,index,ObjectFile(env,Name,Type,Size));
+        index++;
+    }
+    return ArrayFiles;
+}
 
 napi_value KillProcesse(napi_env env, napi_callback_info info){
     size_t argc = 1;
@@ -149,6 +175,7 @@ napi_value getFreeMemoryGB(napi_env env, napi_callback_info info){
 napi_value init(napi_env env, napi_value exports){
     napi_value funcProcessorNumber,funcPCName,funcArchitecture,funcTotalMemory,funcTotalMemoryGB,funcFreeMemory,funcFreeMemoryGB;
     napi_value funcAvailableDrives,funcSizeDrives,funcMousePos,funcScreenSize,funcMoveMouse,funcProcesses,funcKillProcesse;
+    napi_value funcFilesPath;
 
     napi_create_function(env,nullptr,0,getProcessorsNumber,nullptr,&funcProcessorNumber);
     napi_create_function(env,nullptr,0,getPCName,nullptr,&funcPCName);
@@ -164,6 +191,7 @@ napi_value init(napi_env env, napi_value exports){
     napi_create_function(env,nullptr,0,MoveMouse,nullptr,&funcMoveMouse);
     napi_create_function(env,nullptr,0,GetProcesses,nullptr,&funcProcesses);
     napi_create_function(env,nullptr,0,KillProcesse,nullptr,&funcKillProcesse);
+    napi_create_function(env,nullptr,0,getFilesPath,nullptr,&funcFilesPath);
     napi_set_named_property(env,exports,"getProcessorsNumber",funcProcessorNumber);
     napi_set_named_property(env,exports,"getPCName",funcPCName);
     napi_set_named_property(env,exports,"getProcessorArchitecture",funcArchitecture);
@@ -178,6 +206,7 @@ napi_value init(napi_env env, napi_value exports){
     napi_set_named_property(env,exports,"MoveMouse",funcMoveMouse);
     napi_set_named_property(env,exports,"GetProcesses",funcProcesses);
     napi_set_named_property(env,exports,"KillProcesse",funcKillProcesse);
+    napi_set_named_property(env,exports,"getFilesPath",funcFilesPath);
 
     return exports;
 }
