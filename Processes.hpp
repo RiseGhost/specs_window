@@ -11,7 +11,7 @@ struct ProcessMemory{
 };
 
 struct ProcessArray{
-    DWORD Process[2048];
+    DWORD Process[2048];    //Array em que cada posição representa um processo
     int size = 2048;
     int Number;             //Number of identifiers processes
 };
@@ -58,4 +58,9 @@ ProcessArray GetAllProcesses(){
     // Calculate how many process identifiers were returned.
     PA.Number = cbNeeded / sizeof(DWORD);
     return PA;
+}
+
+bool Kill_Processe(HANDLE hProcesse, int Code){
+    if(TerminateProcess(hProcesse, Code))   return true;
+    return false;
 }

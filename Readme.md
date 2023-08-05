@@ -1,7 +1,7 @@
 # Specs for Windows 🪟:
 ## Installation:
 
-It is a NodeJS module to get hardware informacions.
+It is a NodeJS module to get hardware and OS informacions.
 
 ````
 npm install specs_window
@@ -23,6 +23,7 @@ npm install specs_window
 - Get Available Drives (Units: C:\\, G:\\, F:\\, ...);
 - Get Size Drives;
 - Get Processes;
+- Kill Processes;
 - Get Cursor/Mouse position;
 - Move Cursor/Mouse;
 - Get Screen Size
@@ -181,17 +182,17 @@ If the func can´t read a Memory of Drive return -1.
 
 ### Get Processes 🌀:
 
-This func return a array with all process running in machine.
+This func return a array with __all__ process running in machine.
 
 ````JS
 const specs = require('specs_window')
 
-Object.values(specs.getProcesses()).forEach((Processe) => {
-  console.log(Processe)
+specs.getProcesses().then((res) => {
+  res.forEach(element => {console.log(element)});
 })
 
 //or:
-console.log(specs.getProcesses())
+specs.getProcesses().then((res) => {console.log(res)})
 ````
 
 ````JS
@@ -216,6 +217,22 @@ console.log(specs.getProcesses())
 ````
 
 If doesn´t get the Processe Memory, return -1.
+
+### Kill Processes ☠️🌀:
+
+The func KillProcesse takes an int as an argument to represent the processe id (PID).
+In this exemple, I kill Micrsoft Edge processe.
+
+````JS
+const specs = require('specs_window')
+
+specs.getProcesses().then((res) => {
+  res.forEach(Processe => {
+    if(Processe.Name == "msedge.exe")
+      specs.KillProcesse(Processe.PID).then((kill) => {console.log(kill)})
+  });
+})
+````
 
 ### Get Cursor/Mouse position 🐁🗺️:
 

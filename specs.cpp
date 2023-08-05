@@ -2,6 +2,18 @@
 #include"DriveSize.hpp"
 #include"Processes.hpp"
 
+napi_value KillProcesse(napi_env env, napi_callback_info info){
+    size_t argc = 1;
+    napi_value argv[1];
+    int PID;
+    napi_get_cb_info(env,info,&argc,argv,NULL,NULL);
+    if(!CheckDataTypeJS(env,argv[0],napi_number))    napi_throw_error(env,NULL,"The argument is not a number ❌");
+    napi_get_value_int32(env,argv[0],&PID);
+    HANDLE ProcesseOpen = OpenProcess(PROCESS_TERMINATE, FALSE, PID);
+    if(Kill_Processe(ProcesseOpen,0))   return CreateStringJS(env,"Processe Kill ☠️ success ✅.");
+    else                                return CreateStringJS(env,"Processe Kill ☠️ error ❌.");
+}
+
 napi_value GetProcesses(napi_env env, napi_callback_info info){
     ProcessArray PA = GetAllProcesses();
     napi_value ProcesseArray;
@@ -136,7 +148,7 @@ napi_value getFreeMemoryGB(napi_env env, napi_callback_info info){
 
 napi_value init(napi_env env, napi_value exports){
     napi_value funcProcessorNumber,funcPCName,funcArchitecture,funcTotalMemory,funcTotalMemoryGB,funcFreeMemory,funcFreeMemoryGB;
-    napi_value funcAvailableDrives,funcSizeDrives,funcMousePos,funcScreenSize,funcMoveMouse,funcProcesses;
+    napi_value funcAvailableDrives,funcSizeDrives,funcMousePos,funcScreenSize,funcMoveMouse,funcProcesses,funcKillProcesse;
 
     napi_create_function(env,nullptr,0,getProcessorsNumber,nullptr,&funcProcessorNumber);
     napi_create_function(env,nullptr,0,getPCName,nullptr,&funcPCName);
@@ -151,6 +163,7 @@ napi_value init(napi_env env, napi_value exports){
     napi_create_function(env,nullptr,0,getScreenSize,nullptr,&funcScreenSize);
     napi_create_function(env,nullptr,0,MoveMouse,nullptr,&funcMoveMouse);
     napi_create_function(env,nullptr,0,GetProcesses,nullptr,&funcProcesses);
+    napi_create_function(env,nullptr,0,KillProcesse,nullptr,&funcKillProcesse);
     napi_set_named_property(env,exports,"getProcessorsNumber",funcProcessorNumber);
     napi_set_named_property(env,exports,"getPCName",funcPCName);
     napi_set_named_property(env,exports,"getProcessorArchitecture",funcArchitecture);
@@ -164,6 +177,7 @@ napi_value init(napi_env env, napi_value exports){
     napi_set_named_property(env,exports,"getScreenSize",funcScreenSize);
     napi_set_named_property(env,exports,"MoveMouse",funcMoveMouse);
     napi_set_named_property(env,exports,"GetProcesses",funcProcesses);
+    napi_set_named_property(env,exports,"KillProcesse",funcKillProcesse);
 
     return exports;
 }
