@@ -382,17 +382,6 @@
     "want_separate_host_toolset": 0,
     "nodedir": "C:\\Users\\jomig\\AppData\\Local\\node-gyp\\Cache\\18.12.1",
     "standalone_static_library": 1,
-    "msbuild_path": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe",
-    "cache": "C:\\Users\\jomig\\AppData\\Local\\npm-cache",
-    "fund": "",
-    "globalconfig": "C:\\Users\\jomig\\AppData\\Roaming\\npm\\etc\\npmrc",
-    "global_prefix": "C:\\Users\\jomig\\AppData\\Roaming\\npm",
-    "init_module": "C:\\Users\\jomig\\.npm-init.js",
-    "local_prefix": "C:\\Users\\jomig\\OneDrive\\Ambiente de Trabalho\\specs_window",
-    "metrics_registry": "https://registry.npmjs.org/",
-    "node_gyp": "C:\\Users\\jomig\\AppData\\Roaming\\npm\\node_modules\\npm\\node_modules\\node-gyp\\bin\\node-gyp.js",
-    "prefix": "C:\\Users\\jomig\\AppData\\Roaming\\npm",
-    "userconfig": "C:\\Users\\jomig\\.npmrc",
-    "user_agent": "npm/9.1.3 node/v18.12.1 win32 x64 workspaces/false"
+    "msbuild_path": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe"
   }
 }

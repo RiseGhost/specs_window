@@ -16,6 +16,7 @@ npm install specs_window
 
 ## Features:
 - Get CPU Thread number;
+- Get CPU Cores number;
 - Get PC Name (Host Name);
 - Get CPU Architecture ⚠️;
 - Get Total RAM Memory install;
@@ -36,6 +37,14 @@ npm install specs_window
 const specs = require('specs_window')
 
 console.log(specs.getProcessorsNumber())
+````
+
+### Get CPU Cores number:
+
+````JS
+const specs = require('specs_window')
+
+console.log(specs.getProcessorsCore())
 ````
 
 ### Get PC Name (Host Name) 🖥️:

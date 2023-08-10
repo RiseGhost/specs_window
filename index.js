@@ -20,4 +20,5 @@ module.exports = {
     getProcesses:               get_Processes,
     KillProcesse:               Kill_Processe,
     getFilesPath:               FilesPath,
+    getProcessorsCore:          specs.getProcessorsCore,
 }

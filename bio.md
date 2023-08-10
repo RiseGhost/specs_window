@@ -1,4 +1,7 @@
 
+CPU:
+https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getlogicalprocessorinformation
+
 List processes:
 https://learn.microsoft.com/en-us/windows/win32/psapi/enumerating-all-processes
 

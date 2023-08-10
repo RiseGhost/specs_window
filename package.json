@@ -1,11 +1,12 @@
 {
   "name": "specs_window",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "It is a NodeJS module to get hardware informacions.",
   "main": "index.js",
   "scripts": {
     "clean_build": "mkdir build && node-gyp configure build",
     "build": "cd build && node-gyp clean && cd .. && node-gyp configure build",
+    "normal_build": "node-gyp configure build",
     "install": "node-gyp rebuild"
   },
   "repository": {
@@ -25,7 +26,12 @@
     "specs_window",
     "specs",
     "specs window",
-    "specs windows"
+    "specs windows",
+    "Processes",
+    "Enumerating All Processes",
+    "List Processes",
+    "List all Processes",
+    "Kill Processes"
   ],
   "author": "",
   "license": "ISC",

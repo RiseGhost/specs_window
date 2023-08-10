@@ -2,6 +2,13 @@
 #include"libs/DriveSize.hpp"
 #include"libs/Processes.hpp"
 #include"libs/Files.hpp"
+#include"libs/CPUCore.h"
+
+napi_value getProcessorsCore(napi_env env, napi_callback_info info){
+    napi_value Cores;
+    napi_create_int32(env,CPUCores(),&Cores);
+    return Cores;
+}
 
 napi_value getFilesPath(napi_env env, napi_callback_info info){
     size_t argc = 1;
@@ -175,7 +182,7 @@ napi_value getFreeMemoryGB(napi_env env, napi_callback_info info){
 napi_value init(napi_env env, napi_value exports){
     napi_value funcProcessorNumber,funcPCName,funcArchitecture,funcTotalMemory,funcTotalMemoryGB,funcFreeMemory,funcFreeMemoryGB;
     napi_value funcAvailableDrives,funcSizeDrives,funcMousePos,funcScreenSize,funcMoveMouse,funcProcesses,funcKillProcesse;
-    napi_value funcFilesPath;
+    napi_value funcFilesPath, funcProcessorsCore;
 
     napi_create_function(env,nullptr,0,getProcessorsNumber,nullptr,&funcProcessorNumber);
     napi_create_function(env,nullptr,0,getPCName,nullptr,&funcPCName);
@@ -192,6 +199,7 @@ napi_value init(napi_env env, napi_value exports){
     napi_create_function(env,nullptr,0,GetProcesses,nullptr,&funcProcesses);
     napi_create_function(env,nullptr,0,KillProcesse,nullptr,&funcKillProcesse);
     napi_create_function(env,nullptr,0,getFilesPath,nullptr,&funcFilesPath);
+    napi_create_function(env,nullptr,0,getProcessorsCore,nullptr,&funcProcessorsCore);
     napi_set_named_property(env,exports,"getProcessorsNumber",funcProcessorNumber);
     napi_set_named_property(env,exports,"getPCName",funcPCName);
     napi_set_named_property(env,exports,"getProcessorArchitecture",funcArchitecture);
@@ -207,6 +215,7 @@ napi_value init(napi_env env, napi_value exports){
     napi_set_named_property(env,exports,"GetProcesses",funcProcesses);
     napi_set_named_property(env,exports,"KillProcesse",funcKillProcesse);
     napi_set_named_property(env,exports,"getFilesPath",funcFilesPath);
+    napi_set_named_property(env,exports,"getProcessorsCore",funcProcessorsCore);
 
     return exports;
 }
